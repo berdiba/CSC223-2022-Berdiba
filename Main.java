@@ -11,14 +11,28 @@ public class Main
     {
         Scanner input = new Scanner(System.in);
         String StartPrompt = new String();
+        
+        //Clear screen and print out starting text.
+        System.out.print('\u000c');
+        System.out.println("MAP GENERATOR 9000 \n");
+        System.out.println("Type \"START\" to begin.");
+        System.out.println("Type \"MAP\" to customise map.");
+        System.out.println("Type \"QUIT\" to quit. \n");
 
-        System.out.println("MAP GENERATOR \n");
-        System.out.println("Type START to begin. \n");
-
+        //If statements for character input.
         StartPrompt = input.nextLine();
-        if(StartPrompt == "START")
+        if(StartPrompt.equalsIgnoreCase("START"))
         {
-            System.out.println('\u000c');
+            System.out.print('\u000c');
+            GenerateMap();
+        } else 
+        if(StartPrompt.equalsIgnoreCase("MAP"))
+        {
+            System.out.print('\u000c');
+        } else 
+        if(StartPrompt.equalsIgnoreCase("QUIT"))
+        {
+            System.out.print('\u000c');
         }
     }
 
@@ -29,13 +43,13 @@ public class Main
         int width = 20;
         int height = 20;
 
-        int table[][] = new int[width][height];
+        int map[][] = new int[width][height];
         for (int x=0;x<width;x++)
         {
             for (int y=0;y<height;y++)
             {
-                table[x][y]=(x+1)*(y+1);
-                System.out.print(table[x][y]+" ");
+                map[x][y]=(x+1)*(y+1);
+                System.out.print(map[x][y]+" ");
             }
             System.out.println();
         }
