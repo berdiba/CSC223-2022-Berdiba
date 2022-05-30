@@ -10,6 +10,7 @@ public class Main
 {
     int width = 32;
     int height = 32;
+    int depth = 3200;
 
     String StartPrompt = new String();
 
@@ -26,7 +27,7 @@ public class Main
         System.out.println("Type \"START\" to begin.");
         System.out.println("Type \"MAP\" to customise map.");
         System.out.println("Type \"QUIT\" to quit. \n");
-        
+
         StartSettings();
     }
 
@@ -40,6 +41,11 @@ public class Main
         {
             System.out.print('\u000c');
             GenerateMap();
+        } else 
+        if(StartPrompt.equalsIgnoreCase("3D"))
+        {
+            System.out.print('\u000c');
+            GenerateMap3D();
         } else 
         if(StartPrompt.equalsIgnoreCase("MAP"))
         {
@@ -63,11 +69,11 @@ public class Main
             {
                 height = Integer.parseInt(Height);
                 System.out.println("HEIGHT set to "+height+"\n");
-                try {TimeUnit.SECONDS.sleep(2);} catch(InterruptedException e){} //Wait 1 second
+                try {TimeUnit.SECONDS.sleep(1);} catch(InterruptedException e){} //Wait 1 second
             } else
             {
                 System.out.println("Failed to set HEIGHT: non-numerical input \n");
-                try {TimeUnit.SECONDS.sleep(2);} catch(InterruptedException e){} //Wait 1 second
+                try {TimeUnit.SECONDS.sleep(1);} catch(InterruptedException e){} //Wait 1 second
             }
 
             Start();
@@ -184,7 +190,7 @@ public class Main
         System.out.println("Type \"REGEN\" to generate new map.");
         System.out.println("Type \"MENU\" to return to main menu.");
         System.out.println("Type \"QUIT\" to quit.");
-        
+
         Scanner input = new Scanner(System.in);
 
         //If statements for character input.
@@ -206,5 +212,117 @@ public class Main
             System.out.print('\u000c');
             Start();
         }
+    }
+
+    public void GenerateMap3D()
+    {
+        Scanner input = new Scanner(System.in);
+
+        double landChance = 0;
+
+        String map[][][] = new String[depth][height][width];
+        for (int z=0;z<depth;z++)
+        {
+            for (int x=0;x<height;x++)
+            {
+                for (int y=0;y<width;y++)
+                {
+                    if(z == 0) //Generate the starting map from which the following maps will be variations of.
+                    {
+                        if(x > 0 && x < height-1 && y > 0 && y < width-1)
+                        {
+                            if(Math.random() <= landChance)
+                            {
+                                map[z][x][y] = "██";
+                                System.out.print(map[z][x][y]);
+
+                                if (x > 1)
+                                {
+                                    if (map[z][x-1][y].equals("██"))
+                                    {
+                                        landChance = .98;
+                                    } else
+                                    {
+                                        landChance = .60;
+                                    }
+                                } else
+                                {
+                                    landChance = .90;
+                                }
+                            } else
+                            {
+                                map[z][x][y] = "░░";
+                                System.out.print(map[z][x][y]);
+
+                                if (x > 1)
+                                {
+                                    if (map[z][x-1][y].equals("░░"))
+                                    {
+                                        landChance = .02;
+                                    } else
+                                    {
+                                        landChance = .40;
+                                    }
+                                } else
+                                {
+                                    landChance = .10;
+                                }
+                            }
+                        } else
+                        {
+                            map[z][x][y] = "▒▒";
+                            System.out.print(map[z][x][y]);
+                        }
+                    } else
+                    {
+                        if(x > 0 && x < height-1 && y > 0 && y < width-1 && z < depth-1)
+                        {
+                            if(Math.random() <= landChance)
+                            {
+                                map[z][x][y] = "██";
+                                System.out.print(map[z][x][y]);
+
+                                if (map[z-1][x][y].equals("██"))
+                                {
+                                    landChance = .99;
+                                } else
+                                if (map[z-1][x-1][y].equals("██"))
+                                {
+                                    landChance = .98;
+                                } else
+                                {
+                                    landChance = .60;
+                                }
+                            } else
+                            {
+                                map[z][x][y] = "░░";
+                                System.out.print(map[z][x][y]);
+
+                                if (map[z-1][x][y].equals("░░"))
+                                {
+                                    landChance = .01;
+                                } else
+                                if (map[z-1][x-1][y].equals("░░"))
+                                {
+                                    landChance = .02;
+                                } else
+                                {
+                                    landChance = .40;
+                                }
+                            }
+                        } else
+                        {
+                            map[z][x][y] = "▒▒";
+                            System.out.print(map[z][x][y]);
+                        }
+                    }
+                }
+                System.out.println();
+            }
+            try {TimeUnit.MILLISECONDS.sleep(40);} catch(InterruptedException e){}
+            System.out.print('\u000c');
+        }
+
+        MapSettings();
     }
 }
