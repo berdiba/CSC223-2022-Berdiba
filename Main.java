@@ -10,23 +10,43 @@ public class Main
 {
     int width = 32;
     int height = 32;
-    int depth = 3200;
+    int depth = 128;
 
     String StartPrompt = new String();
 
     public Main()
     {
-        Start();
+        StartText();
     }
 
-    public void Start()
+    public void StartText()
     {
         //Clear screen and print out starting text.
         System.out.print('\u000c');
-        System.out.println("MAP GENERATOR 9000 \n");
+
+        System.out.println("█▀▄▀█ ▄▀█ █▀█   █▀▀ █▀▀ █▄░█ █▀▀ █▀█ ▄▀█ ▀█▀ █▀█ █▀█   █▀█ █▀█ █▀█ █▀█");
+        System.out.println("█░▀░█ █▀█ █▀▀   █▄█ ██▄ █░▀█ ██▄ █▀▄ █▀█ ░█░ █▄█ █▀▄   ▀▀█ █▄█ █▄█ █▄█\n");     
+
         System.out.println("Type \"START\" to begin.");
         System.out.println("Type \"MAP\" to customise map.");
+        System.out.println("Type \"INFO\" for info about this project.");
         System.out.println("Type \"QUIT\" to quit. \n");
+
+        System.out.println("\nType \"3D\" for expieremtnal 3D feature.\n");
+
+        StartSettings();
+    }
+    
+    public void AltStartText()
+    {
+        //Same as start text, but does not clear screen or display title.
+        
+        System.out.println("Type \"START\" to begin.");
+        System.out.println("Type \"MAP\" to customise map.");
+        System.out.println("Type \"INFO\" for info about this project.");
+        System.out.println("Type \"QUIT\" to quit. \n");
+
+        System.out.println("\nType \"3D\" for expieremtnal 3D feature.\n");
 
         StartSettings();
     }
@@ -76,9 +96,23 @@ public class Main
                 try {TimeUnit.SECONDS.sleep(1);} catch(InterruptedException e){} //Wait 1 second
             }
 
-            Start();
-            StartSettings();
+            AltStartText();
         } else 
+        if(StartPrompt.equalsIgnoreCase("INFO"))
+        {
+            System.out.print('\u000c');
+
+            System.out.println("█▀▄▀█ ▄▀█ █▀█   █▀▀ █▀▀ █▄░█ █▀▀ █▀█ ▄▀█ ▀█▀ █▀█ █▀█   █▀█ █▀█ █▀█ █▀█");
+            System.out.println("█░▀░█ █▀█ █▀▀   █▄█ ██▄ █░▀█ ██▄ █▀▄ █▀█ ░█░ █▄█ █▀▄   ▀▀█ █▄█ █▄█ █▄█\n");     
+
+            System.out.println("Made by BERDIBA\n");
+            System.out.println("Map Width: " + width);
+            System.out.println("Map Height: " + height);
+            System.out.println("Map Depth: " + depth + "\n");
+
+            try {TimeUnit.MILLISECONDS.sleep(4000);} catch(InterruptedException e){}
+            AltStartText();
+        } else
         if(StartPrompt.equalsIgnoreCase("QUIT"))
         {
             //Terminates program.
@@ -182,15 +216,20 @@ public class Main
             System.out.println();
         }
 
-        MapSettings();
+        MapText();
     }
 
-    public void MapSettings()
+    public void MapText()
     {
         System.out.println("Type \"REGEN\" to generate new map.");
         System.out.println("Type \"MENU\" to return to main menu.");
         System.out.println("Type \"QUIT\" to quit.");
 
+        MapSettings();
+    }
+
+    public void MapSettings()
+    {
         Scanner input = new Scanner(System.in);
 
         //If statements for character input.
@@ -210,7 +249,11 @@ public class Main
         if(StartPrompt.equalsIgnoreCase("MENU"))
         {
             System.out.print('\u000c');
-            Start();
+            StartText();
+        } else 
+        {
+            System.out.println("Unknown command. Please try again \n");
+            MapSettings();
         }
     }
 
@@ -319,10 +362,10 @@ public class Main
                 }
                 System.out.println();
             }
-            try {TimeUnit.MILLISECONDS.sleep(40);} catch(InterruptedException e){}
+            try {TimeUnit.MILLISECONDS.sleep(200);} catch(InterruptedException e){}
             System.out.print('\u000c');
         }
 
-        MapSettings();
+        MapText();
     }
 }
