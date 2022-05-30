@@ -1,12 +1,8 @@
-------------------------------------------------------------------------
-This is the project README file. Here, you should describe your project.
-Tell the reader (someone who does not know anything about this project)
-all he/she needs to know. The comments should usually include at least:
-------------------------------------------------------------------------
-
-PROJECT TITLE: World Map Generator
+PROJECT TITLE: MAP GENERATOR 9000
 PURPOSE OF PROJECT: Generate world map
 VERSION or DATE: 001
-HOW TO START THIS PROJECT:
+HOW TO START THIS PROJECT: Install BlueJ, open the folder in BlueJ, right-click main and press "new Main()"
 AUTHORS: Berdiba
-USER INSTRUCTIONS:
+
+"MAP GENERATOR 9000" is a project which lets the user generate and interact with a 2d array of characters that make up a map. 
+The map is made complety out of ASCII text, meaning it can be copied and pasted anywhere the user wants.
