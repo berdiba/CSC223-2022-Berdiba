@@ -3,24 +3,30 @@
  * @version 16/05/2022
  */
 
+//Import nessesary java extensions
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.geom.*;
-
-public class Main extends JFrame
+public class Main
 {
+    //Declaration of default map dimensions.
     int width = 32;
     int height = 32;
     int depth = 128;
-
+    
+    //Create 2D array that holds map
+    String map[][] = new String[height][width];
+    
+    //Variables for types of pixels on map.
+    public String Land = ("██");
+    public String Hills = ("▓▓");
+    public String Coast = ("▒▒");
+    public String Sea = ("░░");
+    
     String StartPrompt = new String();
 
     public Main()
     {
-        setTitle("Map Generator 9000");
         StartText();
     }
 
@@ -138,8 +144,6 @@ public class Main extends JFrame
         double landChance = 0;
         double hillChance = 0.1;
 
-        //Create 2D array that holds map
-        String map[][] = new String[height][width];
         //Initial map generation
         for (int x=0;x<height;x++)
         {
@@ -149,11 +153,11 @@ public class Main extends JFrame
                 {
                     if(Math.random() <= landChance)
                     {
-                        map[x][y] = "██";
+                        map[x][y] = Land;
 
                         if (x > 1)
                         {
-                            if (map[x-1][y].equals("██"))
+                            if (map[x-1][y].equals(Land))
                             {
                                 landChance = .98;
                             } else
@@ -166,11 +170,11 @@ public class Main extends JFrame
                         }
                     } else
                     {
-                        map[x][y] = "░░";
+                        map[x][y] = Sea;
 
                         if (x > 1)
                         {
-                            if (map[x-1][y].equals("░░"))
+                            if (map[x-1][y].equals(Sea))
                             {
                                 landChance = .02;
                             } else
@@ -184,7 +188,7 @@ public class Main extends JFrame
                     }
                 } else
                 {
-                    map[x][y] = "▒▒";
+                    map[x][y] = Coast;
                 }
             }
         }
@@ -195,11 +199,11 @@ public class Main extends JFrame
             {
                 if(x > 0 && x < height-1 && y > 0 && y < width-1)
                 {
-                    if(map[x-1][y].equals("░░") || map[x][y-1].equals("░░") || map[x+1][y].equals("░░") || map[x][y+1].equals("░░"))
+                    if(map[x-1][y].equals(Sea) || map[x][y-1].equals(Sea) || map[x+1][y].equals(Sea) || map[x][y+1].equals(Sea))
                     {
-                        if(!map[x][y].equals("░░"))
+                        if(!map[x][y].equals(Sea))
                         {
-                            map[x][y] = "▒▒";
+                            map[x][y] = Coast;
                         }
                     } 
                 } 
@@ -212,11 +216,11 @@ public class Main extends JFrame
             {
                 if(x > 0 && x < height-1 && y > 0 && y < width-1)
                 {
-                    if(map[x][y].equals("██"))
+                    if(map[x][y].equals(Land))
                     {
                         if(Math.random() <= hillChance)
                         {
-                            map[x][y] = "▓▓";
+                            map[x][y] = Hills;
                         }
                     } 
                 } 
@@ -233,15 +237,14 @@ public class Main extends JFrame
             System.out.println();
             try {TimeUnit.MILLISECONDS.sleep(10);} catch(InterruptedException e){}
         }
-
-        MapDisplay md = new MapDisplay(map); //!!!!!!this sets the display map in other class to be the map we just made - might have to move
-
+        
         MapText();
     }
 
     public void MapText()
     {
         System.out.println("Type \"REGEN\" to generate new map.");
+        System.out.println("Type \"EXPORT\" to convert map to image.");
         System.out.println("Type \"MENU\" to return to main menu.");
         System.out.println("Type \"QUIT\" to quit.");
 
@@ -267,6 +270,11 @@ public class Main extends JFrame
         {
             System.out.print('\u000c');
             GenerateMap();
+        } else
+        if(StartPrompt.equalsIgnoreCase("EXPORT"))
+        {
+            System.out.print("Exporting map...");
+            MapDisplay md = new MapDisplay(map);
         } else
         if(StartPrompt.equalsIgnoreCase("QUIT"))
         {
@@ -336,10 +344,10 @@ public class Main extends JFrame
                         {
                             if(Math.random() <= landChance)
                             {
-                                map[z][x][y] = "██";
+                                map[z][x][y] = Land;
                                 if (x > 1)
                                 {
-                                    if (map[z][x-1][y].equals("██"))
+                                    if (map[z][x-1][y].equals(Land))
                                     {
                                         landChance = .98;
                                     } else
@@ -352,11 +360,11 @@ public class Main extends JFrame
                                 }
                             } else
                             {
-                                map[z][x][y] = "░░";
+                                map[z][x][y] = Sea;
 
                                 if (x > 1)
                                 {
-                                    if (map[z][x-1][y].equals("░░"))
+                                    if (map[z][x-1][y].equals(Sea))
                                     {
                                         landChance = .02;
                                     } else
@@ -370,16 +378,16 @@ public class Main extends JFrame
                             }
                         } else
                         {
-                            map[z][x][y] = "▒▒";
+                            map[z][x][y] = Coast;
                         }
                     } else
                     {
                         //Changes coastline into sea.
                         if(z > 0 && z < depth-1 && x > 0 && x < height-1 && y > 0 && y < width-1) //Checks to see if map is within bounds.
                         {
-                            if(map[z-1][x][y].equals("▒▒"))
+                            if(map[z-1][x][y].equals(Coast))
                             {
-                                map[z-1][x][y] = "░░";
+                                map[z-1][x][y] = Sea;
                             } else
                             {
                                 map[z][x][y] = map[z-1][x][y];
@@ -388,11 +396,11 @@ public class Main extends JFrame
                         //Changes land into coastline.
                         if(z > 0 && z < depth-1 && x > 0 && x < height-1 && y > 0 && y < width-1) //Checks to see if map is within bounds.
                         {
-                            if(map[z-1][x-1][y].equals("░░") || map[z-1][x][y-1].equals("░░") || map[z-1][x+1][y].equals("░░") || map[z-1][x][y+1].equals("░░"))
+                            if(map[z-1][x-1][y].equals(Sea) || map[z-1][x][y-1].equals(Sea) || map[z-1][x+1][y].equals(Sea) || map[z-1][x][y+1].equals(Sea))
                             {
-                                if(!map[z-1][x][y].equals("░░"))
+                                if(!map[z-1][x][y].equals(Sea))
                                 {
-                                    map[z][x][y] = "▒▒";
+                                    map[z][x][y] = Coast;
                                 } else
                                 {
                                     map[z][x][y] = map[z-1][x][y];
@@ -416,7 +424,7 @@ public class Main extends JFrame
             {
                 for (int y=0;y<width;y++)
                 {
-                    if(map[z][x][y].equals("██")) 
+                    if(map[z][x][y].equals(Land)) 
                     {
                         land = true;
                     }
