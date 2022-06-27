@@ -15,14 +15,14 @@ public class Main
     int depth = 128;
     
     //Create 2D array that holds map
-    String map[][] = new String[height][width];
-    
+    public String map[][];
+
     //Variables for types of pixels on map.
     public String Land = ("██");
     public String Hills = ("▓▓");
     public String Coast = ("▒▒");
     public String Sea = ("░░");
-    
+
     String StartPrompt = new String();
 
     public Main()
@@ -144,6 +144,8 @@ public class Main
         double landChance = 0;
         double hillChance = 0.1;
 
+        map = new String[height][width];
+
         //Initial map generation
         for (int x=0;x<height;x++)
         {
@@ -237,8 +239,9 @@ public class Main
             System.out.println();
             try {TimeUnit.MILLISECONDS.sleep(10);} catch(InterruptedException e){}
         }
-        
+
         MapText();
+        MapSettings();
     }
 
     public void MapText()
@@ -247,8 +250,6 @@ public class Main
         System.out.println("Type \"EXPORT\" to convert map to image.");
         System.out.println("Type \"MENU\" to return to main menu.");
         System.out.println("Type \"QUIT\" to quit.");
-
-        MapSettings();
     }
 
     public void MapText3D()
@@ -256,8 +257,6 @@ public class Main
         System.out.println("Type \"REGEN\" to generate new map.");
         System.out.println("Type \"MENU\" to return to main menu.");
         System.out.println("Type \"QUIT\" to quit.");
-
-        MapSettings3D();
     }
 
     public void MapSettings()
@@ -472,8 +471,9 @@ public class Main
         }
 
         MapText3D();
+        MapSettings3D();
     }
 }
 
-//TO DO: Seperate map generation from map display. Comment work. Make 3D map generation loop. Make Mountains.
+//TO DO: Comment work. Make 3D map generation loop. 
 //PROBLEMS: Map 3D first slice is not good. Try removing it.
