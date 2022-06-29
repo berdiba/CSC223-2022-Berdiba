@@ -74,22 +74,22 @@ public class MapDisplay extends JFrame
             {
                 if(x > 0 && x < 32-1 && y > 0 && y < 32-1) //!!!!!!!!!CHANGE 32 to make heights link to height variables in Main
                 {
-                    if(displayMap[x][y].equals(Land))
-                        landImage.paintIcon(this, g, y*24+yOffset,x*24+xOffset);
-                    if(displayMap[x][y].equals(Hills))
-                        hillsImage.paintIcon(this, g, y*24+yOffset,x*24+xOffset);
-                    if(displayMap[x][y].equals(Sea))
-                        seaImage.paintIcon(this, g, y*24+yOffset,x*24+xOffset);
+                    if(displayMap[x][y].equals(Land)) //Checks to see if specified pixel is of type Land.
+                        landImage.paintIcon(this, g, y*24+yOffset,x*24+xOffset); //Paints land image on screen.
+                    if(displayMap[x][y].equals(Hills)) //Checks to see if specified pixel is of type Hills.
+                        hillsImage.paintIcon(this, g, y*24+yOffset,x*24+xOffset); //Paints hills image on screen.
+                    if(displayMap[x][y].equals(Sea)) //Checks to see if specified pixel is of type Sea.
+                        seaImage.paintIcon(this, g, y*24+yOffset,x*24+xOffset); //Paints sea image on screen.
 
-                    int adjacentLand = 0;
-                    if(displayMap[x][y].equals(Coast))
+                    int adjacentLand = 0; //Resets adjacentland int to zero each time.
+                    if(displayMap[x][y].equals(Coast)) //Checks to see if specified pixel is of type Coast.
                     {
                         if(displayMap[x][y-1].equals(Land) || displayMap[x][y-1].equals(Hills))
                         {
                             coastLeftImage.paintIcon(this, g, y*24+yOffset,x*24+xOffset);
                             adjacentLand++;
                         }
-                        if(displayMap[x-1][y+1].equals(Land) || displayMap[x][y+1].equals(Hills))
+                        if(displayMap[x][y+1].equals(Land) || displayMap[x][y+1].equals(Hills))
                         {
                             coastRightImage.paintIcon(this, g, y*24+yOffset,x*24+xOffset);
                             adjacentLand++;

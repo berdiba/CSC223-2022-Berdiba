@@ -13,7 +13,7 @@ public class Main
     int width = 32;
     int height = 32;
     int depth = 128;
-    
+
     //Create 2D array that holds map
     public String map[][];
 
@@ -147,19 +147,19 @@ public class Main
         map = new String[height][width];
 
         //Initial map generation
-        for (int x=0;x<height;x++)
+        for (int y=0;y<height;y++)
         {
-            for (int y=0;y<width;y++)
+            for (int x=0;x<width;x++)
             {
-                if(x > 0 && x < height-1 && y > 0 && y < width-1)
+                if(y > 0 && y < height-1 && x > 0 && x < width-1)
                 {
                     if(Math.random() <= landChance)
                     {
-                        map[x][y] = Land;
+                        map[y][x] = Land;
 
-                        if (x > 1)
+                        if (y > 1)
                         {
-                            if (map[x-1][y].equals(Land))
+                            if (map[y-1][x].equals(Land))
                             {
                                 landChance = .98;
                             } else
@@ -172,11 +172,11 @@ public class Main
                         }
                     } else
                     {
-                        map[x][y] = Sea;
+                        map[y][x] = Sea;
 
-                        if (x > 1)
+                        if (y > 1)
                         {
-                            if (map[x-1][y].equals(Sea))
+                            if (map[y-1][x].equals(Sea))
                             {
                                 landChance = .02;
                             } else
@@ -190,39 +190,39 @@ public class Main
                     }
                 } else
                 {
-                    map[x][y] = Coast;
+                    map[y][x] = Coast;
                 }
             }
         }
         //Generation of coastline.
-        for (int x=0;x<height;x++)
+        for (int y=0;y<height;y++)
         {
-            for (int y=0;y<width;y++)
+            for (int x=0;x<width;x++)
             {
-                if(x > 0 && x < height-1 && y > 0 && y < width-1)
+                if(y > 0 && y < height-1 && x > 0 && x < width-1)
                 {
-                    if(map[x-1][y].equals(Sea) || map[x][y-1].equals(Sea) || map[x+1][y].equals(Sea) || map[x][y+1].equals(Sea))
+                    if(map[y-1][x].equals(Sea) || map[y][x-1].equals(Sea) || map[y+1][x].equals(Sea) || map[y][x+1].equals(Sea))
                     {
-                        if(!map[x][y].equals(Sea))
+                        if(!map[y][x].equals(Sea))
                         {
-                            map[x][y] = Coast;
+                            map[y][x] = Coast;
                         }
                     } 
                 } 
             }
         }
         //Generation of hills.
-        for (int x=0;x<height;x++)
+        for (int y=0;y<height;y++)
         {
-            for (int y=0;y<width;y++)
+            for (int x=0;x<width;x++)
             {
-                if(x > 0 && x < height-1 && y > 0 && y < width-1)
+                if(y > 0 && y < height-1 && x > 0 && x < width-1)
                 {
-                    if(map[x][y].equals(Land))
+                    if(map[y][x].equals(Land))
                     {
                         if(Math.random() <= hillChance)
                         {
-                            map[x][y] = Hills;
+                            map[y][x] = Hills;
                         }
                     } 
                 } 
@@ -230,11 +230,11 @@ public class Main
         }
 
         //Map printing.
-        for (int x=0;x<height;x++)
+        for (int y=0;y<height;y++)
         {
-            for (int y=0;y<width;y++)
+            for (int x=0;x<width;x++)
             {
-                System.out.print(map[x][y]);
+                System.out.print(map[y][x]);
             }
             System.out.println();
             try {TimeUnit.MILLISECONDS.sleep(10);} catch(InterruptedException e){}
@@ -243,7 +243,7 @@ public class Main
         MapText();
         MapSettings();
     }
-
+    
     public void MapText()
     {
         System.out.println("Type \"REGEN\" to generate new map.");
@@ -324,29 +324,29 @@ public class Main
 
     public void GenerateMap3D()
     {
-        boolean land; //Variable used to check if any land is on screen.
+        boolean land; //Variable used to check if anx land is on screen.
         double landChance = 0;
 
-        depth = 128; //Set depth back to 128, as it will have been changed if this map has been previously generated.
+        depth = 128; //Set depth back to 128, as it will have been changed if this map has been previouslx generated.
 
         String map[][][] = new String[depth][height][width];
         //Map generation
         for (int z=0;z<depth;z++)
         {
-            for (int x=0;x<height;x++)
+            for (int y=0;y<height;y++)
             {
-                for (int y=0;y<width;y++)
+                for (int x=0;x<width;x++)
                 {
                     if(z == 0) //Generate the starting map from which the following maps will be variations of.
                     {
-                        if(x > 0 && x < height-1 && y > 0 && y < width-1)
+                        if(y > 0 && y < height-1 && x > 0 && x < width-1)
                         {
                             if(Math.random() <= landChance)
                             {
-                                map[z][x][y] = Land;
-                                if (x > 1)
+                                map[z][y][x] = Land;
+                                if (y > 1)
                                 {
-                                    if (map[z][x-1][y].equals(Land))
+                                    if (map[z][y-1][x].equals(Land))
                                     {
                                         landChance = .98;
                                     } else
@@ -359,11 +359,11 @@ public class Main
                                 }
                             } else
                             {
-                                map[z][x][y] = Sea;
+                                map[z][y][x] = Sea;
 
-                                if (x > 1)
+                                if (y > 1)
                                 {
-                                    if (map[z][x-1][y].equals(Sea))
+                                    if (map[z][y-1][x].equals(Sea))
                                     {
                                         landChance = .02;
                                     } else
@@ -377,40 +377,40 @@ public class Main
                             }
                         } else
                         {
-                            map[z][x][y] = Coast;
+                            map[z][y][x] = Coast;
                         }
                     } else
                     {
                         //Changes coastline into sea.
-                        if(z > 0 && z < depth-1 && x > 0 && x < height-1 && y > 0 && y < width-1) //Checks to see if map is within bounds.
+                        if(z > 0 && z < depth-1 && y > 0 && y < height-1 && x > 0 && x < width-1) //Checks to see if map is within bounds.
                         {
-                            if(map[z-1][x][y].equals(Coast))
+                            if(map[z-1][y][x].equals(Coast))
                             {
-                                map[z-1][x][y] = Sea;
+                                map[z-1][y][x] = Sea;
                             } else
                             {
-                                map[z][x][y] = map[z-1][x][y];
+                                map[z][y][x] = map[z-1][y][x];
                             }
                         }
                         //Changes land into coastline.
-                        if(z > 0 && z < depth-1 && x > 0 && x < height-1 && y > 0 && y < width-1) //Checks to see if map is within bounds.
+                        if(z > 0 && z < depth-1 && y > 0 && y < height-1 && x > 0 && x < width-1) //Checks to see if map is within bounds.
                         {
-                            if(map[z-1][x-1][y].equals(Sea) || map[z-1][x][y-1].equals(Sea) || map[z-1][x+1][y].equals(Sea) || map[z-1][x][y+1].equals(Sea))
+                            if(map[z-1][y-1][x].equals(Sea) || map[z-1][y][x-1].equals(Sea) || map[z-1][y+1][x].equals(Sea) || map[z-1][y][x+1].equals(Sea))
                             {
-                                if(!map[z-1][x][y].equals(Sea))
+                                if(!map[z-1][y][x].equals(Sea))
                                 {
-                                    map[z][x][y] = Coast;
+                                    map[z][y][x] = Coast;
                                 } else
                                 {
-                                    map[z][x][y] = map[z-1][x][y];
+                                    map[z][y][x] = map[z-1][y][x];
                                 }
                             } else
                             {
-                                map[z][x][y] = map[z-1][x][y];
+                                map[z][y][x] = map[z-1][y][x];
                             }
                         } else
                         {
-                            map[z][x][y] = map[z-1][x][y];
+                            map[z][y][x] = map[z-1][y][x];
                         }
                     }
                 }
@@ -418,12 +418,12 @@ public class Main
 
             land = false;
 
-            //Checks to see if there is any land on the board.
-            for (int x=0;x<height;x++)
+            //Checks to see if there is anx land on the board.
+            for (int y=0;y<height;y++)
             {
-                for (int y=0;y<width;y++)
+                for (int x=0;x<width;x++)
                 {
-                    if(map[z][x][y].equals(Land)) 
+                    if(map[z][y][x].equals(Land)) 
                     {
                         land = true;
                     }
@@ -443,11 +443,11 @@ public class Main
             for (int z=0;z<depth;z++)
             {
                 System.out.print('\u000c'); //Clear pervious sice of map before generating next one.
-                for (int x=0;x<height;x++)
+                for (int y=0;y<height;y++)
                 {
-                    for (int y=0;y<width;y++)
+                    for (int x=0;x<width;x++)
                     {
-                        System.out.print(map[z][x][y]); //Print map.
+                        System.out.print(map[z][y][x]); //Print map.
                     }
                     System.out.println(); //Return after printing line.
                 }
@@ -457,11 +457,11 @@ public class Main
             for (int z=depth-1;z>-1;z--)
             {
                 System.out.print('\u000c'); //Clear pervious sice of map before generating next one.
-                for (int x=height-1;x>-1;x--)
+                for (int y=height-1;y>-1;y--)
                 {
-                    for (int y=width-1;y>-1;y--)
+                    for (int x=width-1;x>-1;x--)
                     {
-                        System.out.print(map[z][x][y]); //Print map.
+                        System.out.print(map[z][y][x]); //Print map.
                     }
                     System.out.println(); //Return after printing line.
                 }
