@@ -13,6 +13,8 @@ public class Main
     int width = 32;
     int height = 32;
     int depth = 128;
+    
+    int repeats = 4;
 
     //Create 2D array that holds map
     public String map[][];
@@ -23,7 +25,13 @@ public class Main
     public String Coast = ("▒▒");
     public String Sea = ("░░");
 
-    String StartPrompt = new String();
+    //Creates new string "Prompt" which will be used to store keyboard input.
+    String Prompt = new String();
+
+    //Creates new keyboard scanner "input" which reads keyboard.
+    Scanner input = new Scanner(System.in);
+    
+    String Style = new String();
 
     public Main()
     {
@@ -45,7 +53,7 @@ public class Main
 
         System.out.println("\nType \"3D\" for experimental 3D feature.\n");
 
-        StartSettings();
+        StartSettings(); //Runs function StartSettings.
     }
 
     public void AltStartText()
@@ -59,35 +67,33 @@ public class Main
 
         System.out.println("\nType \"3D\" for experimental 3D feature.\n");
 
-        StartSettings();
+        StartSettings(); //Runs function StartSettings.
     }
 
     public void StartSettings()
     {
-        Scanner input = new Scanner(System.in);
+        Prompt = input.nextLine(); //Set "Prompt" to  be keyboard input.
 
-        //If statements for character input.
-        StartPrompt = input.nextLine();
-        if(StartPrompt.equalsIgnoreCase("START"))
+        if(Prompt.equalsIgnoreCase("START")) //Checks to see if "Prompt" is equal to "START." Not case-sensitive.
         {
-            System.out.print('\u000c');
-            GenerateMap();
+            System.out.print('\u000c'); //Clears screen
+            GenerateMap(); //runs function GenerateMap.
         } else 
-        if(StartPrompt.equalsIgnoreCase("3D"))
+        if(Prompt.equalsIgnoreCase("3D"))
         {
             System.out.print('\u000c');
             GenerateMap3D();
         } else 
-        if(StartPrompt.equalsIgnoreCase("MAP"))
+        if(Prompt.equalsIgnoreCase("MAP"))
         {
-            //Change map width and height.
-            System.out.print('\u000c');
+            System.out.print('\u000c'); //Clear screen.
 
+            //Set map width and height.
             System.out.println("Set map WIDTH: \n");
-            String Width = input.nextLine().replaceAll("\\D", "");
+            String Width = input.nextLine().replaceAll("\\D", ""); //Sets new String "Width" to be keyboard input. Removes non-numerical text in input.
             if(!Width.equals("")) //If statement checks if Width string is empty
             {
-                width = Integer.parseInt(Width);
+                width = Integer.parseInt(Width); //Parses String "Width" into int "width."
                 System.out.println("WIDTH set to "+width+"\n");
             } else
             {
@@ -109,14 +115,17 @@ public class Main
 
             AltStartText();
         } else 
-        if(StartPrompt.equalsIgnoreCase("INFO"))
+        if(Prompt.equalsIgnoreCase("INFO"))
         {
             System.out.print('\u000c');
 
             System.out.println("█▀▄▀█ ▄▀█ █▀█   █▀▀ █▀▀ █▄░█ █▀▀ █▀█ ▄▀█ ▀█▀ █▀█ █▀█   █▀█ █▀█ █▀█ █▀█");
             System.out.println("█░▀░█ █▀█ █▀▀   █▄█ ██▄ █░▀█ ██▄ █▀▄ █▀█ ░█░ █▄█ █▀▄   ▀▀█ █▄█ █▄█ █▄█\n");     
 
-            System.out.println("Made by BERDIBA\n");
+            System.out.println("Made by BERDIBA");
+            System.out.println("EXPORT code inspired by Bill Viggers.\n");
+            System.out.println("All other code and images original.\n");
+
             System.out.println("Map Width: " + width);
             System.out.println("Map Height: " + height);
             System.out.println("Map Depth: " + depth + "\n");
@@ -124,7 +133,7 @@ public class Main
             try {TimeUnit.MILLISECONDS.sleep(4000);} catch(InterruptedException e){}
             AltStartText();
         } else
-        if(StartPrompt.equalsIgnoreCase("QUIT"))
+        if(Prompt.equalsIgnoreCase("QUIT"))
         {
             //Terminates program.
             System.out.print('\u000c');
@@ -139,19 +148,18 @@ public class Main
 
     public void GenerateMap()
     {
-        Scanner input = new Scanner(System.in);
-
+        //Variables for chances of generating hills and land.
         double landChance = 0;
         double hillChance = 0.1;
 
-        map = new String[height][width];
+        map = new String[height][width]; //2D string array in which the map will be stored.
 
         //Initial map generation
         for (int y=0;y<height;y++)
         {
             for (int x=0;x<width;x++)
             {
-                if(y > 0 && y < height-1 && x > 0 && x < width-1)
+                if(y > 0 && y < height-1 && x > 0 && x < width-1) //Checks to see if specified pixel is within bounds of map.
                 {
                     if(Math.random() <= landChance)
                     {
@@ -243,7 +251,7 @@ public class Main
         MapText();
         MapSettings();
     }
-    
+
     public void MapText()
     {
         System.out.println("Type \"REGEN\" to generate new map.");
@@ -261,28 +269,25 @@ public class Main
 
     public void MapSettings()
     {
-        Scanner input = new Scanner(System.in);
-
         //If statements for character input.
-        StartPrompt = input.nextLine();
-        if(StartPrompt.equalsIgnoreCase("REGEN"))
+        Prompt = input.nextLine();
+        if(Prompt.equalsIgnoreCase("REGEN"))
         {
             System.out.print('\u000c');
             GenerateMap();
         } else
-        if(StartPrompt.equalsIgnoreCase("EXPORT"))
+        if(Prompt.equalsIgnoreCase("EXPORT"))
         {
-            System.out.print("Exporting map...");
-            MapDisplay md = new MapDisplay(map);
+            ExportMap();
         } else
-        if(StartPrompt.equalsIgnoreCase("QUIT"))
+        if(Prompt.equalsIgnoreCase("QUIT"))
         {
             //Terminates program.
             System.out.print('\u000c');
 
             System.exit(0);
         } else 
-        if(StartPrompt.equalsIgnoreCase("MENU"))
+        if(Prompt.equalsIgnoreCase("MENU"))
         {
             System.out.print('\u000c');
             StartText();
@@ -293,25 +298,36 @@ public class Main
         }
     }
 
+    public void ExportMap()
+    {
+        System.out.println("Select map style. Avalable styles: \"MINECRAFT\" \"PIXEL\"\n");
+        Prompt = input.nextLine();
+        if(Prompt.equalsIgnoreCase("PIXEL"))
+        Style = "pixel";
+        if(Prompt.equalsIgnoreCase("MINECRAFT"))
+        Style = "minecraft";
+        
+        System.out.println("Exporting map...");
+        MapDisplay md = new MapDisplay(map, Style);
+    }
+
     public void MapSettings3D()
     {
-        Scanner input = new Scanner(System.in);
-
         //If statements for character input.
-        StartPrompt = input.nextLine();
-        if(StartPrompt.equalsIgnoreCase("REGEN"))
+        Prompt = input.nextLine();
+        if(Prompt.equalsIgnoreCase("REGEN"))
         {
             System.out.print('\u000c');
             GenerateMap3D();
         } else
-        if(StartPrompt.equalsIgnoreCase("QUIT"))
+        if(Prompt.equalsIgnoreCase("QUIT"))
         {
             //Terminates program.
             System.out.print('\u000c');
 
             System.exit(0);
         } else 
-        if(StartPrompt.equalsIgnoreCase("MENU"))
+        if(Prompt.equalsIgnoreCase("MENU"))
         {
             System.out.print('\u000c');
             StartText();
@@ -437,7 +453,7 @@ public class Main
         }
 
         //Map printing
-        for (int a=0;a<100;a++)
+        for (int a=0;a<repeats;a++)
         {
             //Print map and go through slices upwards
             for (int z=0;z<depth;z++)

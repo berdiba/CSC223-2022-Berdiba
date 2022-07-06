@@ -10,46 +10,38 @@ import java.awt.geom.*;
 
 public class MapDisplay extends JFrame
 {
-    final int width = 768;
-    final int height = 768; //Window size.
+    final int IMGSIZE = 24; //The size in "+Style+"s of all images.
+
+    final int width = IMGSIZE*32;
+    final int height = IMGSIZE*32; //Window size.
 
     final int yOffset = 8;
     final int xOffset = 32;
-
-    final int imgSize = 24; //The size in pixels of all images.
 
     public String Land = ("██");
     public String Hills = ("▓▓");
     public String Coast = ("▒▒");
     public String Sea = ("░░");
 
-    //Images
-    final String landFile="land.png";
-    ImageIcon landImage = new ImageIcon(landFile);
-    final String hillsFile="hills.png";
-    ImageIcon hillsImage = new ImageIcon(hillsFile);
-    final String seaFile="sea.png";
-    ImageIcon seaImage = new ImageIcon(seaFile);
+    //Declaration of image variables
+    ImageIcon landImage;
+    ImageIcon hillsImage;
+    ImageIcon seaImage;
+    ImageIcon forestImage;
 
-    final String coastFile="coast.png";
-    ImageIcon coastImage = new ImageIcon(coastFile);
-    final String coastMultiFile="coastmulti.png";
-    ImageIcon coastMultiImage = new ImageIcon(coastMultiFile);
-    final String coastUpFile="coastup.png";
-    ImageIcon coastUpImage = new ImageIcon(coastUpFile);
-    final String coastDownFile="coastdown.png";
-    ImageIcon coastDownImage = new ImageIcon(coastDownFile);
-    final String coastLeftFile="coastleft.png";
-    ImageIcon coastLeftImage = new ImageIcon(coastLeftFile);
-    final String coastRightFile="coastright.png";
-    ImageIcon coastRightImage = new ImageIcon(coastRightFile);
+    ImageIcon coastImage;
+    ImageIcon coastMultiImage;
+    ImageIcon coastUpImage;
+    ImageIcon coastDownImage;
+    ImageIcon coastLeftImage;
+    ImageIcon coastRightImage;
 
-    final String borderFile="border.png";
-    ImageIcon borderImage = new ImageIcon(borderFile);
+    ImageIcon borderImage;
 
     String displayMap[][];
+    String Style = new String();
 
-    public MapDisplay(String[][] m)
+    public MapDisplay(String[][] m, String style)
     {
         setTitle("Map Generator 3000 - Export");
 
@@ -61,6 +53,26 @@ public class MapDisplay extends JFrame
         this.setVisible(true);
 
         displayMap = m;
+        Style = style;
+        
+        if(!Style.equals("minecraft") && !Style.equals("pixel"))
+        System.out.println("Invalid style selected. Reverting to default style.");
+        Style = "pixel";
+
+        //Image variables are here after style has been set.
+        landImage = new ImageIcon("images/"+Style+"/land.png");
+        hillsImage = new ImageIcon("images/"+Style+"/hills.png");
+        seaImage = new ImageIcon("images/"+Style+"/sea.png");
+        forestImage = new ImageIcon("images/"+Style+"/forest.png");
+
+        coastImage = new ImageIcon("images/"+Style+"/coast.png");
+        coastMultiImage = new ImageIcon("images/"+Style+"/coastmulti.png");
+        coastUpImage = new ImageIcon("images/"+Style+"/coastup.png");
+        coastDownImage = new ImageIcon("images/"+Style+"/coastdown.png");
+        coastLeftImage = new ImageIcon("images/"+Style+"/coastleft.png");
+        coastRightImage = new ImageIcon("images/"+Style+"/coastright.png");
+
+        borderImage = new ImageIcon("images/"+Style+"/border.png");
     }
 
     public void paint(Graphics g)
@@ -74,43 +86,51 @@ public class MapDisplay extends JFrame
             {
                 if(x > 0 && x < 32-1 && y > 0 && y < 32-1) //!!!!!!!!!CHANGE 32 to make heights link to height variables in Main
                 {
-                    if(displayMap[x][y].equals(Land)) //Checks to see if specified pixel is of type Land.
-                        landImage.paintIcon(this, g, y*24+yOffset,x*24+xOffset); //Paints land image on screen.
-                    if(displayMap[x][y].equals(Hills)) //Checks to see if specified pixel is of type Hills.
-                        hillsImage.paintIcon(this, g, y*24+yOffset,x*24+xOffset); //Paints hills image on screen.
-                    if(displayMap[x][y].equals(Sea)) //Checks to see if specified pixel is of type Sea.
-                        seaImage.paintIcon(this, g, y*24+yOffset,x*24+xOffset); //Paints sea image on screen.
+                    if(displayMap[x][y].equals(Land)) //Checks to see if specified image is of type Land.
+                        if(!displayMap[x][y-1].equals(Land) || !displayMap[x-1][y].equals(Land) || !displayMap[x][y+1].equals(Land) || !displayMap[x+1][y].equals(Land))
+                        {
+                            if(Math.random() > 0.8)
+                            {
+                                forestImage.paintIcon(this, g, y*IMGSIZE+yOffset,x*IMGSIZE+xOffset);
+                            } else
+                                landImage.paintIcon(this, g, y*IMGSIZE+yOffset,x*IMGSIZE+xOffset); //Paints land image on screen.
+                        } else
+                            forestImage.paintIcon(this, g, y*IMGSIZE+yOffset,x*IMGSIZE+xOffset);
+                    if(displayMap[x][y].equals(Hills)) //Checks to see if specified image is of type Hills.
+                        hillsImage.paintIcon(this, g, y*IMGSIZE+yOffset,x*IMGSIZE+xOffset); //Paints hills image on screen.
+                    if(displayMap[x][y].equals(Sea)) //Checks to see if specified image is of type Sea.
+                        seaImage.paintIcon(this, g, y*IMGSIZE+yOffset,x*IMGSIZE+xOffset); //Paints sea image on screen.
 
                     int adjacentLand = 0; //Resets adjacentland int to zero each time.
-                    if(displayMap[x][y].equals(Coast)) //Checks to see if specified pixel is of type Coast.
+                    if(displayMap[x][y].equals(Coast)) //Checks to see if specified image is of type Coast.
                     {
                         if(displayMap[x][y-1].equals(Land) || displayMap[x][y-1].equals(Hills))
                         {
-                            coastLeftImage.paintIcon(this, g, y*24+yOffset,x*24+xOffset);
+                            coastLeftImage.paintIcon(this, g, y*IMGSIZE+yOffset,x*IMGSIZE+xOffset);
                             adjacentLand++;
                         }
                         if(displayMap[x][y+1].equals(Land) || displayMap[x][y+1].equals(Hills))
                         {
-                            coastRightImage.paintIcon(this, g, y*24+yOffset,x*24+xOffset);
+                            coastRightImage.paintIcon(this, g, y*IMGSIZE+yOffset,x*IMGSIZE+xOffset);
                             adjacentLand++;
                         }
                         if(displayMap[x-1][y].equals(Land) || displayMap[x-1][y].equals(Hills))
                         {
-                            coastUpImage.paintIcon(this, g, y*24+yOffset,x*24+xOffset);
+                            coastUpImage.paintIcon(this, g, y*IMGSIZE+yOffset,x*IMGSIZE+xOffset);
                             adjacentLand++;
                         }
                         if(displayMap[x+1][y].equals(Land) || displayMap[x+1][y].equals(Hills))
                         {
-                            coastDownImage.paintIcon(this, g, y*24+yOffset,x*24+xOffset);
+                            coastDownImage.paintIcon(this, g, y*IMGSIZE+yOffset,x*IMGSIZE+xOffset);
                             adjacentLand++;
                         }
                         if(adjacentLand >= 2)
-                            coastMultiImage.paintIcon(this, g, y*24+yOffset,x*24+xOffset);
+                            coastMultiImage.paintIcon(this, g, y*IMGSIZE+yOffset,x*IMGSIZE+xOffset);
                         if(adjacentLand == 0)
-                            coastImage.paintIcon(this, g, y*24+yOffset,x*24+xOffset);
+                            coastImage.paintIcon(this, g, y*IMGSIZE+yOffset,x*IMGSIZE+xOffset);
                     }
                 } else
-                    borderImage.paintIcon(this, g, y*24+yOffset,x*24+xOffset);
+                    borderImage.paintIcon(this, g, y*IMGSIZE+yOffset,x*IMGSIZE+xOffset);
             }
         }
     }
