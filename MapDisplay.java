@@ -1,5 +1,5 @@
 /**
- * @author Baxter J B Berdinner - Taken from Bill
+ * @author Baxter J B Berdinner - Inspired by Bill Viggers
  * @version 15/06/2022
  */
 
@@ -43,22 +43,15 @@ public class MapDisplay extends JFrame
 
     public MapDisplay(String[][] m, String style)
     {
-        setTitle("Map Generator 3000 - Export");
-
-        this.getContentPane().setPreferredSize(new Dimension(width,height));  
-        this.getContentPane().setLayout(null);
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-
-        this.pack();
-        this.setVisible(true);
-
         displayMap = m;
         Style = style;
         
         if(!Style.equals("minecraft") && !Style.equals("pixel"))
-        System.out.println("Invalid style selected. Reverting to default style.");
-        Style = "pixel";
-
+        {
+            System.out.println("Invalid style selected. Reverting to default style.");
+            Style = "pixel";
+        }
+        
         //Image variables are here after style has been set.
         landImage = new ImageIcon("images/"+Style+"/land.png");
         hillsImage = new ImageIcon("images/"+Style+"/hills.png");
@@ -71,8 +64,17 @@ public class MapDisplay extends JFrame
         coastDownImage = new ImageIcon("images/"+Style+"/coastdown.png");
         coastLeftImage = new ImageIcon("images/"+Style+"/coastleft.png");
         coastRightImage = new ImageIcon("images/"+Style+"/coastright.png");
-
+        
         borderImage = new ImageIcon("images/"+Style+"/border.png");
+        
+        setTitle("Map Generator 3000 - Export");
+
+        this.getContentPane().setPreferredSize(new Dimension(width,height));  
+        this.getContentPane().setLayout(null);
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+        this.pack();
+        this.setVisible(true);
     }
 
     public void paint(Graphics g)
@@ -129,8 +131,16 @@ public class MapDisplay extends JFrame
                         if(adjacentLand == 0)
                             coastImage.paintIcon(this, g, y*IMGSIZE+yOffset,x*IMGSIZE+xOffset);
                     }
-                } else
-                    borderImage.paintIcon(this, g, y*IMGSIZE+yOffset,x*IMGSIZE+xOffset);
+                 } else
+                 try{
+                 borderImage.paintIcon(this, g, y*IMGSIZE+yOffset,x*IMGSIZE+xOffset);
+                } catch(Exception e)
+                {
+                    e.printStackTrace();
+                    System.out.println("//");
+                    System.out.println(borderImage);
+                    System.out.println("//");
+                }
             }
         }
     }
