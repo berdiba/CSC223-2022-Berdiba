@@ -12,8 +12,8 @@ public class MapDisplay extends JFrame
 {
     final int IMGSIZE = 24; //The size in "+Style+"s of all images.
 
-    final int width = IMGSIZE*32;
-    final int height = IMGSIZE*32; //Window size.
+    final int screenWidth;
+    final int screenHeight; //Variables that will control the size of the window.
 
     final int yOffset = 8;
     final int xOffset = 32;
@@ -40,19 +40,28 @@ public class MapDisplay extends JFrame
 
     String displayMap[][];
     String Style = new String();
+    final int WIDTH;
+    final int HEIGHT;
 
-    public MapDisplay(String[][] m, String style)
+    public MapDisplay(String[][] m, String style, int width, int height) //Passing variables from Main class into MapDisplay.
     {
+        //Setting MapDisplay variables to variables from Main.
         displayMap = m;
         Style = style;
+        WIDTH = width;
+        HEIGHT = height;
         
-        if(!Style.equals("minecraft") && !Style.equals("pixel"))
+        screenWidth = IMGSIZE*WIDTH;
+        screenHeight = IMGSIZE*HEIGHT;
+        
+        //If user types in anything other than avalable styles, default to "pixel".
+        if(!Style.equals("monochrome") && !Style.equals("pixel")) 
         {
             System.out.println("Invalid style selected. Reverting to default style.");
             Style = "pixel";
         }
         
-        //Image variables are here after style has been set.
+        //Image variables are set after style has been set.
         landImage = new ImageIcon("images/"+Style+"/land.png");
         hillsImage = new ImageIcon("images/"+Style+"/hills.png");
         seaImage = new ImageIcon("images/"+Style+"/sea.png");
@@ -69,7 +78,7 @@ public class MapDisplay extends JFrame
         
         setTitle("Map Generator 3000 - Export");
 
-        this.getContentPane().setPreferredSize(new Dimension(width,height));  
+        this.getContentPane().setPreferredSize(new Dimension(screenWidth,screenHeight));  
         this.getContentPane().setLayout(null);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -82,11 +91,11 @@ public class MapDisplay extends JFrame
         super.paint(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        for (int x=0;x<32;x++)
+        for (int x=0;x<WIDTH;x++)
         {
-            for (int y=0;y<32;y++)
+            for (int y=0;y<HEIGHT;y++)
             {
-                if(x > 0 && x < 32-1 && y > 0 && y < 32-1) //!!!!!!!!!CHANGE 32 to make heights link to height variables in Main
+                if(x > 0 && x < WIDTH-1 && y > 0 && y < HEIGHT-1) //!!!!!!!!!CHANGE 32 to make heights link to height variables in Main
                 {
                     if(displayMap[x][y].equals(Land)) //Checks to see if specified image is of type Land.
                         if(!displayMap[x][y-1].equals(Land) || !displayMap[x-1][y].equals(Land) || !displayMap[x][y+1].equals(Land) || !displayMap[x+1][y].equals(Land))

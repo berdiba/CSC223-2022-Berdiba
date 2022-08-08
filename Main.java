@@ -27,15 +27,16 @@ public class Main
 
     //Creates new string "Prompt" which will be used to store keyboard input.
     String Prompt = new String();
+    
+    //Creates new string "Style" which will be used to storethe map style.
+    String Style = new String();
 
     //Creates new keyboard scanner "input" which reads keyboard.
     Scanner input = new Scanner(System.in);
     
-    String Style = new String();
-
     public Main()
     {
-        StartText();
+        StartText(); //Run StartText function.
     }
 
     public void StartText()
@@ -113,7 +114,7 @@ public class Main
                 try {TimeUnit.SECONDS.sleep(1);} catch(InterruptedException e){} //Wait 1 second
             }
 
-            AltStartText();
+            AltStartText(); //Run AltStartText function.
         } else 
         if(Prompt.equalsIgnoreCase("INFO"))
         {
@@ -130,15 +131,14 @@ public class Main
             System.out.println("Map Height: " + height);
             System.out.println("Map Depth: " + depth + "\n");
 
-            try {TimeUnit.MILLISECONDS.sleep(4000);} catch(InterruptedException e){}
+            try {TimeUnit.SECONDS.sleep(2);} catch(InterruptedException e){}
             AltStartText();
         } else
         if(Prompt.equalsIgnoreCase("QUIT"))
         {
-            //Terminates program.
             System.out.print('\u000c');
 
-            System.exit(0);
+            System.exit(0); //Terminates program.
         } else 
         {
             System.out.println("Unknown command. Please try again \n");
@@ -155,15 +155,15 @@ public class Main
         map = new String[height][width]; //2D string array in which the map will be stored.
 
         //Initial map generation
-        for (int y=0;y<height;y++)
+        for (int y=0;y<height;y++) //While variable y is less than height variable, run code below then increase y by 1.
         {
-            for (int x=0;x<width;x++)
+            for (int x=0;x<width;x++) //While variable x is less than height variable, run code below then increase x by 1.
             {
                 if(y > 0 && y < height-1 && x > 0 && x < width-1) //Checks to see if specified pixel is within bounds of map.
                 {
-                    if(Math.random() <= landChance)
+                    if(Math.random() <= landChance) 
                     {
-                        map[y][x] = Land;
+                        map[y][x] = Land; //Sets specified space on 2D map array to variable "Land".
 
                         if (y > 1)
                         {
@@ -300,15 +300,15 @@ public class Main
 
     public void ExportMap()
     {
-        System.out.println("Select map style. Avalable styles: \"MINECRAFT\" \"PIXEL\"\n");
+        System.out.println("Select map style. Avalable styles: \"MONOCHROME\" \"PIXEL\"\n");
         Prompt = input.nextLine();
         if(Prompt.equalsIgnoreCase("PIXEL"))
         Style = "pixel";
-        if(Prompt.equalsIgnoreCase("MINECRAFT"))
-        Style = "minecraft";
+        if(Prompt.equalsIgnoreCase("MONOCHROME"))
+        Style = "monochrome";
         
         System.out.println("Exporting map...");
-        MapDisplay md = new MapDisplay(map, Style);
+        MapDisplay md = new MapDisplay(map, Style, width, height);
     }
 
     public void MapSettings3D()
@@ -492,4 +492,3 @@ public class Main
 }
 
 //TO DO: Comment work. Make 3D map generation loop. 
-//PROBLEMS: Map 3D first slice is not good. Try removing it.
