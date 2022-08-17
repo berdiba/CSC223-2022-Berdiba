@@ -12,11 +12,11 @@ public class MapDisplay extends JFrame
 {
     final int IMGSIZE = 24; //The size in "+Style+"s of all images.
 
-    final int screenWidth;
-    final int screenHeight; //Variables that will control the size of the window.
+    final int SCREENWIDTH;
+    final int SCREENHEIGHT; //Variables that will control the size of the window.
 
-    final int yOffset = 8;
-    final int xOffset = 32;
+    final int YOFFSET = 8;
+    final int XOFFSET = 32;
 
     public String Land = ("██");
     public String Hills = ("▓▓");
@@ -51,8 +51,8 @@ public class MapDisplay extends JFrame
         WIDTH = width;
         HEIGHT = height;
         
-        screenWidth = IMGSIZE*WIDTH;
-        screenHeight = IMGSIZE*HEIGHT;
+        SCREENWIDTH = IMGSIZE*WIDTH;
+        SCREENHEIGHT = IMGSIZE*HEIGHT;
         
         //If user types in anything other than avalable styles, default to "pixel".
         if(!Style.equals("monochrome") && !Style.equals("pixel")) 
@@ -78,7 +78,7 @@ public class MapDisplay extends JFrame
         
         setTitle("Map Generator 3000 - Export");
 
-        this.getContentPane().setPreferredSize(new Dimension(screenWidth,screenHeight));  
+        this.getContentPane().setPreferredSize(new Dimension(SCREENWIDTH,SCREENHEIGHT));  
         this.getContentPane().setLayout(null);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -95,54 +95,54 @@ public class MapDisplay extends JFrame
         {
             for (int y=0;y<HEIGHT;y++)
             {
-                if(x > 0 && x < WIDTH-1 && y > 0 && y < HEIGHT-1) //!!!!!!!!!CHANGE 32 to make heights link to height variables in Main
+                if(x > 0 && x < WIDTH-1 && y > 0 && y < HEIGHT-1)
                 {
                     if(displayMap[x][y].equals(Land)) //Checks to see if specified image is of type Land.
                         if(!displayMap[x][y-1].equals(Land) || !displayMap[x-1][y].equals(Land) || !displayMap[x][y+1].equals(Land) || !displayMap[x+1][y].equals(Land))
                         {
                             if(Math.random() > 0.8)
                             {
-                                forestImage.paintIcon(this, g, y*IMGSIZE+yOffset,x*IMGSIZE+xOffset);
+                                forestImage.paintIcon(this, g, y*IMGSIZE+YOFFSET,x*IMGSIZE+XOFFSET);
                             } else
-                                landImage.paintIcon(this, g, y*IMGSIZE+yOffset,x*IMGSIZE+xOffset); //Paints land image on screen.
+                                landImage.paintIcon(this, g, y*IMGSIZE+YOFFSET,x*IMGSIZE+XOFFSET); //Paints land image on screen.
                         } else
-                            forestImage.paintIcon(this, g, y*IMGSIZE+yOffset,x*IMGSIZE+xOffset);
+                            forestImage.paintIcon(this, g, y*IMGSIZE+YOFFSET,x*IMGSIZE+XOFFSET);
                     if(displayMap[x][y].equals(Hills)) //Checks to see if specified image is of type Hills.
-                        hillsImage.paintIcon(this, g, y*IMGSIZE+yOffset,x*IMGSIZE+xOffset); //Paints hills image on screen.
+                        hillsImage.paintIcon(this, g, y*IMGSIZE+YOFFSET,x*IMGSIZE+XOFFSET); //Paints hills image on screen.
                     if(displayMap[x][y].equals(Sea)) //Checks to see if specified image is of type Sea.
-                        seaImage.paintIcon(this, g, y*IMGSIZE+yOffset,x*IMGSIZE+xOffset); //Paints sea image on screen.
+                        seaImage.paintIcon(this, g, y*IMGSIZE+YOFFSET,x*IMGSIZE+XOFFSET); //Paints sea image on screen.
 
                     int adjacentLand = 0; //Resets adjacentland int to zero each time.
                     if(displayMap[x][y].equals(Coast)) //Checks to see if specified image is of type Coast.
                     {
                         if(displayMap[x][y-1].equals(Land) || displayMap[x][y-1].equals(Hills))
                         {
-                            coastLeftImage.paintIcon(this, g, y*IMGSIZE+yOffset,x*IMGSIZE+xOffset);
+                            coastLeftImage.paintIcon(this, g, y*IMGSIZE+YOFFSET,x*IMGSIZE+XOFFSET);
                             adjacentLand++;
                         }
                         if(displayMap[x][y+1].equals(Land) || displayMap[x][y+1].equals(Hills))
                         {
-                            coastRightImage.paintIcon(this, g, y*IMGSIZE+yOffset,x*IMGSIZE+xOffset);
+                            coastRightImage.paintIcon(this, g, y*IMGSIZE+YOFFSET,x*IMGSIZE+XOFFSET);
                             adjacentLand++;
                         }
                         if(displayMap[x-1][y].equals(Land) || displayMap[x-1][y].equals(Hills))
                         {
-                            coastUpImage.paintIcon(this, g, y*IMGSIZE+yOffset,x*IMGSIZE+xOffset);
+                            coastUpImage.paintIcon(this, g, y*IMGSIZE+YOFFSET,x*IMGSIZE+XOFFSET);
                             adjacentLand++;
                         }
                         if(displayMap[x+1][y].equals(Land) || displayMap[x+1][y].equals(Hills))
                         {
-                            coastDownImage.paintIcon(this, g, y*IMGSIZE+yOffset,x*IMGSIZE+xOffset);
+                            coastDownImage.paintIcon(this, g, y*IMGSIZE+YOFFSET,x*IMGSIZE+XOFFSET);
                             adjacentLand++;
                         }
                         if(adjacentLand >= 2)
-                            coastMultiImage.paintIcon(this, g, y*IMGSIZE+yOffset,x*IMGSIZE+xOffset);
+                            coastMultiImage.paintIcon(this, g, y*IMGSIZE+YOFFSET,x*IMGSIZE+XOFFSET);
                         if(adjacentLand == 0)
-                            coastImage.paintIcon(this, g, y*IMGSIZE+yOffset,x*IMGSIZE+xOffset);
+                            coastImage.paintIcon(this, g, y*IMGSIZE+YOFFSET,x*IMGSIZE+XOFFSET);
                     }
                  } else
                  try{
-                 borderImage.paintIcon(this, g, y*IMGSIZE+yOffset,x*IMGSIZE+xOffset);
+                 borderImage.paintIcon(this, g, y*IMGSIZE+YOFFSET,x*IMGSIZE+XOFFSET);
                 } catch(Exception e)
                 {
                     e.printStackTrace();

@@ -9,12 +9,18 @@ import java.util.concurrent.TimeUnit;
 
 public class Main
 {
-    //Declaration of default map dimensions.
+    //Declaration of default map dimensions. Theese can be changed so they are not constants.
     int width = 32;
     int height = 32;
     int depth = 128;
-    
+
     int repeats = 4;
+
+    final int WAIT1SEC = 1;
+    final int WAIT2SEC = 2;
+    final int WAIT3SEC = 3;
+    final int WAIT10MILLISEC = 10;
+    final int WAIT20MILLISEC = 20;
 
     //Create 2D array that holds map
     public String map[][];
@@ -27,13 +33,13 @@ public class Main
 
     //Creates new string "Prompt" which will be used to store keyboard input.
     String Prompt = new String();
-    
+
     //Creates new string "Style" which will be used to storethe map style.
     String Style = new String();
 
     //Creates new keyboard scanner "input" which reads keyboard.
     Scanner input = new Scanner(System.in);
-    
+
     public Main()
     {
         StartText(); //Run StartText function.
@@ -91,27 +97,35 @@ public class Main
 
             //Set map width and height.
             System.out.println("Set map WIDTH: \n");
-            String Width = input.nextLine().replaceAll("\\D", ""); //Sets new String "Width" to be keyboard input. Removes non-numerical text in input.
+            String Width = input.nextLine().replaceAll("\\D", ""); //Sets new String "Width" to be keyboard input.
             if(!Width.equals("")) //If statement checks if Width string is empty
             {
-                width = Integer.parseInt(Width); //Parses String "Width" into int "width."
-                System.out.println("WIDTH set to "+width+"\n");
+                if(Integer.parseInt(Width) >= 8 && Integer.parseInt(Width) <= 128)
+                {
+                    width = Integer.parseInt(Width); //Parses String "Width" into int "width."
+                    System.out.println("WIDTH set to "+width+"\n");
+                } else
+                    System.out.println("Failed to set WIDTH: out of bounds numerical input \n");
             } else
-            {
                 System.out.println("Failed to set WIDTH: non-numerical input \n");
-            }
 
             System.out.println("Set map HEIGHT: \n");
             String Height = input.nextLine().replaceAll("\\D", "");
             if(!Height.equals("")) //If statement checks if Height string is empty
             {
-                height = Integer.parseInt(Height);
-                System.out.println("HEIGHT set to "+height+"\n");
-                try {TimeUnit.SECONDS.sleep(1);} catch(InterruptedException e){} //Wait 1 second
+                if(Integer.parseInt(Height) >= 8 && Integer.parseInt(Height) <= 128)
+                {
+                    height = Integer.parseInt(Height); //Parses String "Height" into int "height."
+                    System.out.println("HEIGHT set to "+height+"\n");
+                } else
+                {
+                    System.out.println("Failed to set HEIGHT: out of bounds numerical input \n");
+                    try {TimeUnit.SECONDS.sleep(WAIT1SEC);} catch(InterruptedException e){}
+                }
             } else
             {
-                System.out.println("Failed to set HEIGHT: non-numerical input \n");
-                try {TimeUnit.SECONDS.sleep(1);} catch(InterruptedException e){} //Wait 1 second
+                System.out.println("Failed to set HIGHT: non-numerical input \n");
+                try {TimeUnit.SECONDS.sleep(WAIT1SEC);} catch(InterruptedException e){}
             }
 
             AltStartText(); //Run AltStartText function.
@@ -131,7 +145,7 @@ public class Main
             System.out.println("Map Height: " + height);
             System.out.println("Map Depth: " + depth + "\n");
 
-            try {TimeUnit.SECONDS.sleep(2);} catch(InterruptedException e){}
+            try {TimeUnit.SECONDS.sleep(WAIT2SEC);} catch(InterruptedException e){}
             AltStartText();
         } else
         if(Prompt.equalsIgnoreCase("QUIT"))
@@ -161,11 +175,11 @@ public class Main
             {
                 if(y > 0 && y < height-1 && x > 0 && x < width-1) //Checks to see if specified pixel is within bounds of map.
                 {
-                    if(Math.random() <= landChance) 
+                    if(Math.random() <= landChance) //Checks to see if a random number between 0 and 1 is greater or equal to variable landChance.
                     {
                         map[y][x] = Land; //Sets specified space on 2D map array to variable "Land".
 
-                        if (y > 1)
+                        if (y > 1) //if y > 1, check to see if the square above is Land. This cannot be done if y = 1, as the above square will always be Border.
                         {
                             if (map[y-1][x].equals(Land))
                             {
@@ -178,9 +192,9 @@ public class Main
                         {
                             landChance = .90;
                         }
-                    } else
+                    } else 
                     {
-                        map[y][x] = Sea;
+                        map[y][x] = Sea; //If selected pixel is not land, set it to sea.
 
                         if (y > 1)
                         {
@@ -193,16 +207,18 @@ public class Main
                             }
                         } else
                         {
-                            landChance = .10;
+                            landChance = .10; 
+                            //Sea is more likely to generate if there are adjacent sea pixels. The same is true for land.
+                            //This effect gives large blobs of land and sea, making the map look more realistic.
                         }
                     }
                 } else
                 {
-                    map[y][x] = Coast;
+                    map[y][x] = Coast; //This will later be changed in MapDisplay class to be the border.
                 }
             }
         }
-        //Generation of coastline.
+        //Generation of coastline. Checks if adjacent pixels are sea and if selected pixel is not sea. If true, sets current pixel to coast.
         for (int y=0;y<height;y++)
         {
             for (int x=0;x<width;x++)
@@ -219,7 +235,7 @@ public class Main
                 } 
             }
         }
-        //Generation of hills.
+        //Generation of hills. Sets random pixels that are land to hills.
         for (int y=0;y<height;y++)
         {
             for (int x=0;x<width;x++)
@@ -238,17 +254,17 @@ public class Main
         }
 
         //Map printing.
-        for (int y=0;y<height;y++)
+        for (int y=0;y<height;y++) //Moves through each row of the map.
         {
-            for (int x=0;x<width;x++)
+            for (int x=0;x<width;x++) //Moves through each collumn of the map.
             {
-                System.out.print(map[y][x]);
+                System.out.print(map[y][x]); //Print specified pixel on screen.
             }
             System.out.println();
-            try {TimeUnit.MILLISECONDS.sleep(10);} catch(InterruptedException e){}
+            try {TimeUnit.MILLISECONDS.sleep(10);} catch(InterruptedException e){} //Waits 10 milliseconds before generating the next slice.
         }
 
-        MapText();
+        MapText(); //After generating and printing the map, run nessesary code for UI.
         MapSettings();
     }
 
@@ -260,7 +276,7 @@ public class Main
         System.out.println("Type \"QUIT\" to quit.");
     }
 
-    public void MapText3D()
+    public void MapText3D() //3D map generation has no export feature, so MapText3D removes this option.
     {
         System.out.println("Type \"REGEN\" to generate new map.");
         System.out.println("Type \"MENU\" to return to main menu.");
@@ -273,8 +289,8 @@ public class Main
         Prompt = input.nextLine();
         if(Prompt.equalsIgnoreCase("REGEN"))
         {
-            System.out.print('\u000c');
-            GenerateMap();
+            System.out.print('\u000c'); //Clears screen.
+            GenerateMap(); //Regenrates the map.
         } else
         if(Prompt.equalsIgnoreCase("EXPORT"))
         {
@@ -284,7 +300,6 @@ public class Main
         {
             //Terminates program.
             System.out.print('\u000c');
-
             System.exit(0);
         } else 
         if(Prompt.equalsIgnoreCase("MENU"))
@@ -303,10 +318,10 @@ public class Main
         System.out.println("Select map style. Avalable styles: \"MONOCHROME\" \"PIXEL\"\n");
         Prompt = input.nextLine();
         if(Prompt.equalsIgnoreCase("PIXEL"))
-        Style = "pixel";
+            Style = "pixel";
         if(Prompt.equalsIgnoreCase("MONOCHROME"))
-        Style = "monochrome";
-        
+            Style = "monochrome";
+
         System.out.println("Exporting map...");
         MapDisplay md = new MapDisplay(map, Style, width, height);
     }
@@ -467,9 +482,9 @@ public class Main
                     }
                     System.out.println(); //Return after printing line.
                 }
-                try {TimeUnit.MILLISECONDS.sleep(20);} catch(InterruptedException e){}
+                try {TimeUnit.MILLISECONDS.sleep(WAIT20MILLISEC);} catch(InterruptedException e){}
             }
-            //Go back doownwards through slices.
+            //Go back downwards through slices.
             for (int z=depth-1;z>-1;z--)
             {
                 System.out.print('\u000c'); //Clear pervious sice of map before generating next one.
@@ -481,9 +496,9 @@ public class Main
                     }
                     System.out.println(); //Return after printing line.
                 }
-                try {TimeUnit.MILLISECONDS.sleep(20);} catch(InterruptedException e){}
+                try {TimeUnit.MILLISECONDS.sleep(WAIT20MILLISEC);} catch(InterruptedException e){}
             }
-            try {TimeUnit.MILLISECONDS.sleep(300);} catch(InterruptedException e){}
+            try {TimeUnit.SECONDS.sleep(WAIT3SEC);} catch(InterruptedException e){}
         }
 
         MapText3D();
